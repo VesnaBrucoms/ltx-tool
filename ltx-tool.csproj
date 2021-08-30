@@ -43,11 +43,61 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="LtxTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="docs\structure.md" />
+    <None Include="testData\Aragorn.ltx" />
+    <None Include="testData\Beorning.ltx" />
+    <None Include="testData\Black_Rider.ltx" />
+    <None Include="testData\Boromir.ltx" />
+    <None Include="testData\Credits.ltx" />
+    <None Include="testData\DIK_Keys.ltx" />
+    <None Include="testData\Dwarf_Shieldbreaker.ltx" />
+    <None Include="testData\Dwarf_Worker.ltx" />
+    <None Include="testData\Elven_Archer.ltx" />
+    <None Include="testData\Elven_Knight.ltx" />
+    <None Include="testData\Elven_Lightbringer.ltx" />
+    <None Include="testData\Erkenbrand.ltx" />
+    <None Include="testData\Evil_Narrator.ltx" />
+    <None Include="testData\Faramir.ltx" />
+    <None Include="testData\Frodo.ltx" />
+    <None Include="testData\Game.ltx" />
+    <None Include="testData\GameConsole.ltx" />
+    <None Include="testData\Gandalf.ltx" />
+    <None Include="testData\Gathrok.ltx" />
+    <None Include="testData\Giant_Spider.ltx" />
+    <None Include="testData\Gimli.ltx" />
+    <None Include="testData\Goblin_Slave.ltx" />
+    <None Include="testData\Gollum.ltx" />
+    <None Include="testData\Gondor_Swordsman.ltx" />
+    <None Include="testData\Good_Narrator.ltx" />
+    <None Include="testData\Grishnakh.ltx" />
+    <None Include="testData\Haradrim.ltx" />
+    <None Include="testData\Hotkeys_Text.ltx" />
+    <None Include="testData\Human_Worker.ltx" />
+    <None Include="testData\Install.ltx" />
+    <None Include="testData\Legolas.ltx" />
+    <None Include="testData\Menu.ltx" />
+    <None Include="testData\MultiPlayerMaps.ltx" />
+    <None Include="testData\Nazgul_King.ltx" />
+    <None Include="testData\Orc_Bowman.ltx" />
+    <None Include="testData\Orc_Group.ltx" />
+    <None Include="testData\Orc_Slasher.ltx" />
+    <None Include="testData\Orc_Slasher_2.ltx" />
+    <None Include="testData\Orc_Slasher_3.ltx" />
+    <None Include="testData\Qa_Mara.ltx" />
+    <None Include="testData\Ranger.ltx" />
+    <None Include="testData\RasterizerErrors.ltx" />
+    <None Include="testData\Rohan_Rider.ltx" />
+    <None Include="testData\Saruman.ltx" />
+    <None Include="testData\TechTreeTooltips.ltx" />
+    <None Include="testData\Theoden.ltx" />
+    <None Include="testData\Troll_Bonecleaver.ltx" />
+    <None Include="testData\Uruk_Hai.ltx" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
