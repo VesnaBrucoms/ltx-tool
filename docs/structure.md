@@ -1,15 +1,24 @@
 ﻿# Structure of the LTX File Format
 
-Possibly based off LaTeX word processing format?
+LTX files are broken down into two sections:
+* header
+* text entries
 
-**Header**
-* char		8	magicNumber			LIQDTEXT
-* float		4	version				Version of the format. Is 1.0.
-* int32		4	textEntries			Count of text entries
+## Header
+The header stores general file information.
 
-**Text Entry**
+| Type  | Bytes | Name        | Description                          |
+| ----- | ----- | ----------- | ------------------------------------ |
+| char  | 8	    | magicNumber | Format identifier. Always `LIQDTEXT` |
+| float	| 4	    | version     | Always 1.0                           |
+| int32	| 4	    | textEntries | Number of text entries in the file   |
+
+## Text Entries
 For each text entry:
-* byte		1	unknown				Line number? Entry in grouping ID?
-* int32		4	unknown				Page number? Grouping ID?
-* int32		4	characterCount		Indicates the number of characters (including `00 00` terminator) in the following string. Multiply by 2 to get the number of bytes to read.
-* unicode[]	2	text				The text entry.
+
+| Type                          | Bytes | Name           | Description                                                                                                    |
+| ----------------------------- | ----- | -------------- | -------------------------------------------------------------------------------------------------------------- |
+| byte                          | 1	    | unknown        | Line number?                                                                                                   |
+| int32	                        | 4	    | unknown        | Page number?                                                                                                   |
+| int32	                        | 4	    | characterCount | Number of characters in stored string (including `00 00` terminator). Multiply by 2 to get the number of bytes |
+| string (UTF-16 little endian)	| x	    | text           | The stored string. Includes some custom formatting, which is still unknown in how it is interpreted            |
