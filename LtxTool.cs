@@ -7,65 +7,93 @@ namespace ltx_tool
     {
         static void Main(string[] args)
         {
-            byte[] bytes = ReadAllBytes("C:\\Users\\etste\\source\\repos\\ltx-tool\\testData\\Aragorn.ltx");
+            if (!BitConverter.IsLittleEndian)
+            {
+                Console.WriteLine("ERROR: Computer architecture not little endian!");
+                Console.WriteLine("\nPress any key to close.");
+                Console.ReadKey();
+                Environment.Exit(1);
+            }
 
-            // Header
-            Console.WriteLine("Is little Endian? -> " + BitConverter.IsLittleEndian);
-            string magicNumber = getString(bytes);
+            string textFilePath;
+            if (args.Length == 0)
+            {
+                textFilePath = GetUserInput();
+            }
+            else
+            {
+                textFilePath = args[args.Length - 1];
+            }
+
+            byte[] bytes = new byte[1];
+            if (Exists(textFilePath))
+            {
+                bytes = ReadAllBytes(textFilePath);
+            } else
+            {
+                Console.WriteLine("ERROR: File does not exist! Please double check given path.");
+                Console.WriteLine("\nPress any key to close.");
+                Console.ReadKey();
+                Environment.Exit(2);
+            }
+
+            string magicNumber = GetString(bytes);
             Console.WriteLine(magicNumber);
 
             float version = BitConverter.ToSingle(bytes, 8);
             Console.WriteLine("version: " + version);
 
             int textEntries = BitConverter.ToInt32(bytes, 12);
-            Console.WriteLine("textEntries: " + textEntries); // Text entry count?
+            Console.WriteLine("textEntries: " + textEntries);
 
-            // D1
-            byte unknownByte = bytes[16];
-            Console.WriteLine("\nunknownByte: " + unknownByte);
+            int pointer = 16;
+            for (int i = 0; i < textEntries; i++)
+            {
+                byte unknownByte = bytes[pointer];
+                Console.WriteLine("\nunknownByte: " + unknownByte);
+                pointer += 1;
 
-            int unknown = BitConverter.ToInt32(bytes, 17);
-            Console.WriteLine("unknown: " + unknown);
+                int unknown = BitConverter.ToInt32(bytes, pointer);
+                Console.WriteLine("unknown: " + unknown);
+                pointer += 4;
 
-            int charsInFollowingString = BitConverter.ToInt32(bytes, 21);
-            Console.WriteLine("charsInFollowingString: " + charsInFollowingString);
+                int charsInFollowingString = BitConverter.ToInt32(bytes, pointer);
+                Console.WriteLine("charsInFollowingString: " + charsInFollowingString);
+                pointer += 4;
 
-            byte[] dialogue1 = new byte[charsInFollowingString * 2];
-            Array.Copy(bytes, 25, dialogue1, 0, charsInFollowingString * 2);
-            Console.WriteLine(getUnicode(dialogue1));
+                byte[] dialogue = new byte[charsInFollowingString * 2];
+                Array.Copy(bytes, pointer, dialogue, 0, charsInFollowingString * 2);
+                Console.WriteLine(GetUnicode(dialogue));
+                pointer += charsInFollowingString * 2;
+            }
 
-            // D2
-            byte unknownByte2 = bytes[87];
-            Console.WriteLine("\nunknownByte: " + unknownByte2);
-
-            int unknown2 = BitConverter.ToInt32(bytes, 88);
-            Console.WriteLine("unknown: " + unknown2);
-
-            int chars2 = BitConverter.ToInt32(bytes, 92);
-            Console.WriteLine("charsInFollowingString: " + chars2);
-
-            byte[] dialogue2 = new byte[chars2 * 2];
-            Array.Copy(bytes, 96, dialogue2, 0, chars2 * 2);
-            Console.WriteLine(getUnicode(dialogue2));
-
-            // D3
-            byte unknownByte3 = bytes[144];
-            Console.WriteLine("\nunknownByte: " + unknownByte3);
-
-            int unknown3 = BitConverter.ToInt32(bytes, 145);
-            Console.WriteLine("unknown: " + unknown3);
-
-            int chars3 = BitConverter.ToInt32(bytes, 149);
-            Console.WriteLine("charsInFollowingString: " + chars3);
-
-            byte[] dialogue3 = new byte[chars3 * 2];
-            Array.Copy(bytes, 153, dialogue3, 0, chars3 * 2);
-            Console.WriteLine(getUnicode(dialogue3));
-
+            Console.WriteLine("\nPress any key to close.");
             Console.ReadKey();
         }
 
-        private static string getString(byte[] bytes)
+        private static string GetUserInput()
+        {
+            Console.WriteLine("Please provide the path of the archive to unpack");
+            Console.Write("-> ");
+            return Console.ReadLine();
+        }
+
+        private static string GetArchiveName(string path)
+        {
+            string name;
+            if (path.Contains("\\"))
+            {
+                string[] splitPath = path.Split('\\');
+                name = splitPath[splitPath.Length - 1];
+            }
+            else
+            {
+                name = path;
+            }
+            return name;
+        }
+
+        private static string GetString(byte[] bytes)
         {
             string newString = "";
             for (int i = 0; i < 8; i++)
@@ -75,18 +103,7 @@ namespace ltx_tool
             return newString;
         }
 
-        private static string getUnicode(byte[] bytes, int start, int to)
-        {
-            string newString = "";
-            for (int i = start; i < to; i += 2)
-            {
-                char character = BitConverter.ToChar(bytes, i);
-                newString += character;
-            }
-            return newString;
-        }
-
-        private static string getUnicode(byte[] bytes)
+        private static string GetUnicode(byte[] bytes)
         {
             string newString = "";
             for (int i = 0; i < bytes.Length; i += 2)
