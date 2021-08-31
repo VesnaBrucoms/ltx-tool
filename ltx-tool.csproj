@@ -49,6 +49,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="docs\structure.md" />
+    <None Include="README.md" />
     <None Include="testData\Aragorn.ltx" />
     <None Include="testData\Beorning.ltx" />
     <None Include="testData\Black_Rider.ltx" />
